@@ -49,7 +49,7 @@ create_spectrogram(chirp,9000,"0-8000Hz Chirp Signal")
 # Someone commented what the likely notes are in the YT video so these freqs
 # are for B4f,C4,G4#,G3#,Ef4
 notes = [466.2,261.6,415.3,207.7,311.1]
-secondspernote = [0.4,0.6,0.85,0.6,1.57]
+secondspernote = np.array([0.4,0.6,0.85,0.6,1.57])
 samples = secondspernote * (sr*duration/5)
 
 freq3 = x
@@ -65,7 +65,7 @@ for i in range(len(freq3)):
         # Next note
         current_note = current_note + 1
         # For no note:
-        if current_note > len(seconds)-1:
+        if current_note > len(secondspernote)-1:
             freq3[i] = x[i]*0
             continue
         else:
@@ -73,5 +73,5 @@ for i in range(len(freq3)):
             i_u = i_u + samples[current_note]
                 
 sinetonefun = np.sin((2*np.pi)*freq3)
-sf.write("teamOrnstein-cetk.wav")
+sf.write("teamOrnstein-cetk.wav",sinetonefun,sr)
 create_spectrogram(sinetonefun,2000,"CETK Chord Progression")
